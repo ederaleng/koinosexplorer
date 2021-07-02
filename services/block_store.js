@@ -1,6 +1,5 @@
 import { Request as JSONRequest } from './request';
 
-
 class BlockStore extends JSONRequest {
   constructor() {
     super("http://45.56.104.152:8080");
@@ -24,6 +23,14 @@ class BlockStore extends JSONRequest {
       return_receipt: false
     };
     return this.send("block_store.get_blocks_by_height", data);
+  }
+
+  get_transactions_by_id(tx_ids = []) {
+    let data = {
+      transaction_ids: [ tx_ids ],
+    };
+    console.log(data)
+    return this.send("block_store.get_transactions_by_id", data);
   }
 }
 
