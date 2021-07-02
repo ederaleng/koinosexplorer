@@ -45,9 +45,7 @@ function Block(props) {
                   <tr>
                     <td> Previous block id </td>
                     <td>
-                      <Link href={`/block/${ _get(props, 'block.block.header.previous', '') }`} className="link_next">
                       { _get(props, 'block.block.header.previous', '') }
-                      </Link>
                     </td>
                   </tr>
                   <tr>
