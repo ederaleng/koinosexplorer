@@ -7,7 +7,7 @@ function NavbarComponent() {
     <Navbar bg="light" expand="md">
       <nav className="container">
         <Navbar.Brand>
-          <Link href="/"> Koinos Explorer </Link>
+          <Link href="/"> Koinos Explorer ( Testnet ) </Link>
         </Navbar.Brand>
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
