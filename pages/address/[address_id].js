@@ -8,10 +8,10 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
 // services
-//import { chain } from '@/services/chain';
+// import { chain } from '@/services/chain';
 
 // utils
-//import { address_to_bytes, to_base58, bytes_to_koin } from '@/utils/parsed'
+// import { address_to_bytes, to_base58, bytes_to_koin } from '@/utils/parsed'
 
 function index(props) {
   return (
@@ -48,17 +48,18 @@ function index(props) {
 
 
 export async function getServerSideProps({ params }) {
-  let { address } = params;
+  let { address_id } = params;
   // let contract_id = 'Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=';
   // let entry_point = 0x15619248;
   // let b = await address_to_bytes(address);
   // let args = await to_base58(b);
   // let result = await chain.get_contract(contract_id, entry_point, args)
-  // console.log(_get(result, 'result', ''))
-  // let koin_liquit = await bytes_to_koin(_get(result, 'result', ''));
+  // let koin_encrypt = _get(result, 'result', '').substring(1);
+  // let koin_liquit = await bytes_to_koin(koin_encrypt);
+  // console.log(koin_liquit)
   return {
     props: {
-      address
+      address: address_id
     }, // will be passed to the page component as props
   }
 }
