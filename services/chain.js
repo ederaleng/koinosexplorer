@@ -1,6 +1,4 @@
 import { Request as JSONRequest } from './request';
-import * as Koinos from 'koinos-types2'
-
 
 class Chain extends JSONRequest {
   constructor() {
