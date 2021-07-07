@@ -31,9 +31,16 @@ export class Request {
       }
       axios(req).then(response => {
         if(time_out) { clearTimeout(id_time_out) }
-        resolve(
-          _get(response, 'data.result', {})
-        )
+        /* Successful */
+        let result = _get(response, 'data.result', null)
+        if(result != null) {
+          resolve(result);
+        }
+        /* Error */
+        let error = _get(response, 'data.error', null)
+        if(error != null) {
+          reject(error);
+        }
       }).catch((err) => {
         reject(err)
       })

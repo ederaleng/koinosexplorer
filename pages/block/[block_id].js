@@ -149,22 +149,18 @@ export async function getServerSideProps({ params }) {
    * Request data
    */
   let chain_head = await chain.get_head();
-  let block_info = await block_store.get_blocks_by_height(
+  let block = await block_store.get_blocks_by_height(
     _get(chain_head, 'head_topology.id', ''),
     parseInt(block_id),
     1
   )
 
-
-  let block_request = [ _get(block_info,'block_items[0].block_id',0) ];
-  let block_data = await block_store.get_blocks_by_id(block_request);
-
-  console.log(JSON.stringify(block_data))
-
+  
   /**
    * Parsed data
    */
-  let _block = _get(block_data, 'block_items[0]', null);
+  let _block = _get(block, 'block_items[0]', null);
+  // console.log(JSON.stringify(_block))
   if( _get(_block, 'block', null) == null) {
     return {
       redirect: {

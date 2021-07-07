@@ -119,21 +119,17 @@ export async function getServerSideProps() {
    */
   let chain_id = await chain.get_chain_id();
   let chain_head = await chain.get_head();
-  let block_new_data = await block_store.get_blocks_by_height(
+  let blocks = await block_store.get_blocks_by_height(
     _get(chain_head, 'head_topology.id', ''),
     _get(chain_head, 'head_topology.height', 0) - 10,
     10
   )
-  
-  
-  let list_blocks = _get(block_new_data, 'block_items', []).map(b => b.block_id);
-  let blocks = await block_store.get_blocks_by_id(list_blocks);
-  let _blocks = _get(blocks, 'block_items', []).reverse();
 
   /**
    * Parsed data
    */
-  let _chain_id = _get(chain_id, 'chain_id', '');
+  let _chain_id =   _get(chain_id, 'chain_id', '');
+  let _blocks =     _get(blocks, 'block_items', []).reverse();
   let _chain_head = chain_head;
 
   return {

@@ -1,16 +1,20 @@
-// import base58 from 'bs58';
-// import base64 from 'base-64';
-// import base58 from 'bs58';
-// import base64 from 'base-64';
+import base58 from 'bs58';
+import ByteBuffer from 'bytebuffer';
 
-export const to_bytes = (x, a, t) => {
-  var bytes = [];
-  let i = a
-  do {
-    bytes[--i] = x & (255);
-    x = (t == 'big' ? x>>8 : x<<8);
-  } while ( i )
-  return bytes;
+export const to_bytes = (x) => {
+  let buffer = Buffer.from(x, 'base64');
+  return buffer.readBigInt64BE().toString();
+}
+
+const from_bytes = (x, a, t) => {
+  var val = 0;
+  for (var i = 0; i < x.length; ++i) {        
+    val += x[i];        
+    if (i < x.length-1) {
+      val = (t == 'big' ? val>>8 : val<<8);
+    }
+  }
+  return val;
 }
 
 export const to_base58 = (b) => {
@@ -18,9 +22,9 @@ export const to_base58 = (b) => {
   return 'z' + s.toString();
 }
 
-export const bytes_to_koin = (b) => {
-  console.log(base64.decode(result))
-  return;
+export const bytes_to_koin = (b64) => {
+  let b = ByteBuffer.fromBase64(b64)
+  return from_bytes(b.buffer, 1, 'little');
 }
 
 export const address_to_bytes = async (address) => {

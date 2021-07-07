@@ -19,7 +19,7 @@ class BlockStore extends JSONRequest {
       head_block_id: head_block_id,
       ancestor_start_height: block_height,
       num_blocks:     num_blocks,
-      return_block:   false,
+      return_block:   true,
       return_receipt: false
     };
     return this.send("block_store.get_blocks_by_height", data);
