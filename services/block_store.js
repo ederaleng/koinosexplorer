@@ -2,7 +2,7 @@ import { Request as JSONRequest } from './request';
 
 class BlockStore extends JSONRequest {
   constructor() {
-    super("http://45.56.104.152:8080");
+    super(process.env.endpoint);
   }
 
   get_blocks_by_id(block_ids) {
