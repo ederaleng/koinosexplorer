@@ -4,9 +4,9 @@ import { Navbar } from 'react-bootstrap'
 
 function NavbarComponent() {
   return (
-    <Navbar bg="light" expand="md">
+    <Navbar id="main-nav" expand="md">
       <nav className="container">
-        <Navbar.Brand>
+        <Navbar.Brand className="underline" >
           <Link href="/"> Koinos Explorer ( Testnet ) </Link>
         </Navbar.Brand>
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
