@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="container text-center my-4">
+    <footer className="text-white container text-center my-4">
       KoinosExplorer &copy; {new Date().getFullYear()}
     </footer>
   )
