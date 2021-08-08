@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import {  Card, Row, Col, Table, ListGroup } from 'react-bootstrap';
+import { Card, Row, Col, Table, ListGroup } from 'react-bootstrap';
+import { Uint64, VariableBlob, Str } from 'koinos-types2'
 // import Koinos from 'koinos-types2';
 import { get as _get } from 'lodash';
 
@@ -8,10 +9,7 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
 // services
-// import { chain } from '@/services/chain';
-
-// utils
-// import { address_to_bytes, to_base58, bytes_to_koin } from '@/utils/parsed'
+import { chain } from '@/services/chain';
 
 function index(props) {
   return (
@@ -31,7 +29,16 @@ function index(props) {
               </Card.Header>
               <Card.Body>
 
-                <h4 className="text-center"> Page in construction </h4>
+              <Table bordered responsive>
+                <tbody>
+                  
+                  <tr>
+                    <td> Balance </td>
+                    <td> { _get(props, 'balance', 0).toFixed(8) } { _get(props, 'symbol', 'TKOIN') } </td>
+                  </tr>
+
+                </tbody>
+              </Table>
 
               </Card.Body>
             </Card>
@@ -49,17 +56,33 @@ function index(props) {
 
 export async function getServerSideProps({ params }) {
   let { address_id } = params;
-  // let contract_id = 'Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=';
-  // let entry_point = 0x15619248;
-  // let b = await address_to_bytes(address);
-  // let args = await to_base58(b);
-  // let result = await chain.get_contract(contract_id, entry_point, args)
-  // let koin_encrypt = _get(result, 'result', '').substring(1);
-  // let koin_liquit = await bytes_to_koin(koin_encrypt);
-  // console.log(koin_liquit)
+
+  let _address = new Str(address_id)
+  let vb = new VariableBlob();
+  vb = _address.serialize(vb)
+
+  // ger balance token
+  let _balance = await chain.get_contract(
+    "Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=",
+    0x15619248,
+    vb.toJSON()
+  )
+  let balance = new VariableBlob(_balance.result);
+  balance = Uint64.deserialize(balance)
+
+  // get symbol token
+  let _symbol = await chain.get_contract(
+    "Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=",
+    0x7e794b24
+  )
+  let symbol = new VariableBlob(_symbol.result);
+  symbol = Str.deserialize(symbol)
+
   return {
     props: {
-      address: address_id
+      address: address_id,
+      balance: parseInt( balance.num )/100000000,
+      symbol: symbol.str
     }, // will be passed to the page component as props
   }
 }

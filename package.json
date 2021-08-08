@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta3",
     "bs58": "^4.0.1",
+    "koinos-types2": "^1.4.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "latest",

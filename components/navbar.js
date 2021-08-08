@@ -1,6 +1,10 @@
 
 import Link from 'next/link';
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+// icons
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 function NavbarComponent() {
   return (
@@ -9,6 +13,12 @@ function NavbarComponent() {
         <Navbar.Brand className="underline" >
           <Link href="/"> Koinos Explorer ( Testnet ) </Link>
         </Navbar.Brand>
+
+        <Nav className="mr-auto">
+          <a href="https://github.com/koinosexplorer" rel="noreferrer" target="_blank">
+            <FontAwesomeIcon icon={faGithub} size="2x" color="white" />
+          </a>
+        </Nav>
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="mr-auto">
