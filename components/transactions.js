@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { get as _get } from 'lodash';
 import { Card, ListGroup } from 'react-bootstrap';
 import { VariableBlob, Str, Uint64 } from 'koinos-types2';
@@ -19,11 +20,25 @@ function Transactions(props) {
           {
             Object.keys(_get(obj, 'value'))
             .map((v_key, key) => {
-              var value_d = _get(obj, `value.${v_key}`);
-              if(typeof value_d == "object" || typeof value_d == "undefined")
+              var value_d = _get(obj, `value.${v_key}`, '');
+              // stringify parsed
+              if(typeof value_d == "object" && Object.keys(value_d).length == 0) {
                 value_d = JSON.stringify(value_d)
+              }
+              // link render
+              if(typeof value_d == "object" && value_d.link) {
+                return (
+                  <ListGroup.Item key={"list_op_"+key}>
+                    <span> {v_key.replace(/_/g, ' ')}: </span>
+                    <Link href={value_d.link}>
+                      { value_d.value.length > 50 ? value_d.value.substring(0, 48) + '...' : value_d.value }
+                    </Link>
+                  </ListGroup.Item>
+                )
+              }
+              // default render
               return (
-                <ListGroup.Item key={"list_tx_"+key}>
+                <ListGroup.Item key={"list_op_"+key}>
                   { v_key.replace(/_/g, ' ') }: { value_d.length > 50 ? value_d.substring(0, 48) + '...' : value_d }
                 </ListGroup.Item>
               )
@@ -49,11 +64,21 @@ function Transactions(props) {
 
     if(_contract_id == 'Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=' && _entry_point == 1659871890) {
       let vb = new VariableBlob(_args)
+      // args transfer
+      let from   = Str.deserialize(vb).str
+      let to     = Str.deserialize(vb).str
+      let tokens = (parseInt(Uint64.deserialize(vb).num) / 100000000).toFixed(8) + ' tKOIN'
       name_op = "transfer"
       args_op = {
-        from: Str.deserialize(vb).str,
-        to: Str.deserialize(vb).str,
-        value: (parseInt(Uint64.deserialize(vb).num) / 100000000).toFixed(8) + ' tKOIN'
+        from: {
+          value: from,
+          link: `/address/${from}`
+        },
+        to: {
+          value: to,
+          link: `/address/${to}`
+        },
+        value: tokens
       }
     }
 
