@@ -71,18 +71,18 @@ export async function getServerSideProps({ params }) {
   balance = Uint64.deserialize(balance)
 
   // get symbol token
-  let _symbol = await chain.get_contract(
+  /*let _symbol = await chain.get_contract(
     "Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=",
     0x7e794b24
   )
   let symbol = new VariableBlob(_symbol.result);
-  symbol = Str.deserialize(symbol)
+  symbol = Str.deserialize(symbol)*/
 
   return {
     props: {
       address: address_id,
       balance: parseInt( balance.num )/100000000,
-      symbol: symbol.str
+      symbol: 'tKOIN' // symbol.str
     }, // will be passed to the page component as props
   }
 }
