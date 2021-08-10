@@ -7,6 +7,7 @@ import moment from 'moment';
 // components global
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
+import Transactions from '@/components/transactions';
 
 // services
 import { block_store } from '@/services/block_store';
@@ -92,26 +93,7 @@ function Block(props) {
                                 {
                                   _get(tx, 'active_data.operations', '')
                                   .map((op, op_key) => (
-                                    <Card key={"op_"+op_key}>
-                                      <Card.Header>
-                                        <b> { _get(op, 'type') } </b>
-                                      </Card.Header>
-                                      <ListGroup variant="flush">
-                                        {
-                                          Object.keys(_get(op, 'value'))
-                                          .map((v_key, key) => {
-                                            var value_d = _get(op, `value.${v_key}`);
-                                            if(typeof value_d == "object" || typeof value_d == "function" || typeof value_d == "undefined")
-                                              value_d = JSON.stringify(value_d)
-                                            return (
-                                              <ListGroup.Item key={"list_tx_"+key}>
-                                                { v_key.replace(/_/g, ' ') }: { value_d.length > 50 ? value_d.substring(0, 48) + '...' : value_d }
-                                              </ListGroup.Item>
-                                            )
-                                          })
-                                        }
-                                      </ListGroup>
-                                    </Card>
+                                    <Transactions op={op} key={op_key} />
                                   ))
                                 }
                               </td>
