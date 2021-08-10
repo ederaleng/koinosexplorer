@@ -78,7 +78,7 @@ function Transactions(props) {
           value: to,
           link: `/address/${to}`
         },
-        value: tokens
+        amount: tokens
       }
     }
 
