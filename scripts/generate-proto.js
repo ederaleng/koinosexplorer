@@ -22,7 +22,7 @@ async function generate() {
 		fs.mkdirSync(pathOut, { recursive: true });
 	}
 
-  pbjs.main([ "--target", "static-module", "--wrap", "commonjs", "--out", "./../koinos-proto-js/index.js" ].concat(filesProto), function(err, output) {
+  pbjs.main([ "--target", "static-module", "--wrap", "es6", "--out", "./../koinos-proto-js/index.js" ].concat(filesProto), function(err, output) {
     if (err) {
       throw err;
     }

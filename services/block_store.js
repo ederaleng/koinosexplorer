@@ -1,4 +1,7 @@
+import Proto from './proto'
 import { Request as JSONRequest } from './request';
+
+const ProtoBlockStore = Proto.block_store;
 
 class BlockStore extends JSONRequest {
   constructor() {
@@ -6,22 +9,22 @@ class BlockStore extends JSONRequest {
   }
 
   get_blocks_by_id(block_ids) {
-    let data = {
-      block_id: block_ids,
-      return_block_blob:true,
-      return_receipt_blob:true
-    };
+    let data = new ProtoBlockStore.get_blocks_by_id_request({
+      blockId: block_ids,
+      returnBlock: true,
+      returnReceipt: true
+    })
     return this.send("block_store.get_blocks_by_id", data);
   }
 
   get_blocks_by_height(head_block_id, block_height, num_blocks = 1) {
-    let data = {
-      head_block_id: head_block_id,
-      ancestor_start_height: block_height,
-      num_blocks:     num_blocks,
-      return_block:   true,
-      return_receipt: false
-    };
+    let data = new ProtoBlockStore.get_blocks_by_height_request({
+      headBlockId: head_block_id,
+      ancestorStartHeight: block_height,
+      numBlocks: num_blocks,
+      returnBlock: true,
+      returnReceipt: true
+    })
     return this.send("block_store.get_blocks_by_height", data);
   }
 
