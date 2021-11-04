@@ -1,7 +1,5 @@
-import Proto from './proto'
+import ProtoChain from '@/proto/koinos/rpc/chain/chain_rpc_pb';
 import { Request as JSONRequest } from './request';
-
-const ProtoChain = Proto.chain;
 
 class Chain extends JSONRequest {
   constructor() {
@@ -9,21 +7,23 @@ class Chain extends JSONRequest {
   }
 
   get_head() {
-    let data = new ProtoChain.get_head_info_request();
-    return this.send("chain.get_head_info", data.toJSON());
+    let message = new ProtoChain.get_head_info_request()
+    let data = message.toObject()
+    return this.send("chain.get_head_info", data);
   }
   get_chain_id() {
-    let data = new ProtoChain.get_chain_id_request();
-    return this.send("chain.get_chain_id", data.toJSON());
+    let message = new ProtoChain.get_chain_id_request()
+    let data = message.toObject()
+    return this.send("chain.get_chain_id", data);
   }
   
   get_contract(contract_id, entry_point, args) {
-    let data = new ProtoChain.read_contract_request({
-      contractId: contract_id,
-      entryPoint: entry_point,
-      args: args
-    });
-    return this.send("chain.read_contract", data.toJSON());
+    let message = new ProtoChain.read_contract_request();
+    message.setContractId(contract_id)
+    message.setEntryPoint(entry_point)
+    message.setArgs(args)
+    let data = message.toObject()
+    return this.send("chain.read_contract", data);
   }
 }
 

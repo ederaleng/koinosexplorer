@@ -4,10 +4,13 @@ import { get as _get } from 'lodash';
 import {  Card, Row, Col, Table, ListGroup } from 'react-bootstrap';
 import moment from 'moment';
 
+// Blockchain
+import TokenContract from '@/proto/koinos/rpc/block_store/block_store_rpc_pb';
+
 // components global
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
-import Transactions from '@/components/transactions';
+// import Transactions from '@/components/transactions';
 
 // services
 import { block_store } from '@/services/block_store';
@@ -51,7 +54,7 @@ function Block(props) {
                   </tr>
                   <tr>
                     <td> Timestamp </td>
-                    <td> { moment(_get(props, 'block.block.header.timestamp', '')).format('DD-MM-YYYY H:mm:ss') } </td>
+                    <td> { moment.unix( _get(props, 'block.block.header.timestamp', '')/1000 ).format('DD-MM-YYYY H:mm:ss') } </td>
                   </tr>
  
                 </tbody>
@@ -63,8 +66,11 @@ function Block(props) {
                   <h5> Transactions </h5>
                 </Card.Header>
                 <Card.Body>
+                  <h5 className="text-center"> Transactions history under construction </h5>
+
 
                   {
+                    /*
                     _get(props, 'block.block.transactions', '').length > 0 ?
                     <Table bordered responsive>
                       <thead>
@@ -78,6 +84,7 @@ function Block(props) {
                       <tbody>
 
                         {
+                          
                           _get(props, 'block.block.transactions', '')
                           .map((tx, tx_key) => (
                             <tr key={'tx_'+tx_key}>
@@ -100,12 +107,14 @@ function Block(props) {
                               <td> { _get(tx, 'active_data.resource_limit', '') } </td>
                             </tr>
                           ))
+
                         }
 
                       </tbody>
                     </Table>
                     : 
                     <div className="text-center"> 0 Transactions in block { _get(props, 'block.block_height', '') } </div>
+                    */
                   }
 
                 </Card.Body>

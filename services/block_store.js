@@ -1,7 +1,5 @@
-import Proto from './proto'
+import ProtoBlockStore from '@/proto/koinos/rpc/block_store/block_store_rpc_pb';
 import { Request as JSONRequest } from './request';
-
-const ProtoBlockStore = Proto.block_store;
 
 class BlockStore extends JSONRequest {
   constructor() {
@@ -9,22 +7,23 @@ class BlockStore extends JSONRequest {
   }
 
   get_blocks_by_id(block_ids) {
-    let data = new ProtoBlockStore.get_blocks_by_id_request({
+    let message = new ProtoBlockStore.get_blocks_by_id_request({
       blockId: block_ids,
       returnBlock: true,
       returnReceipt: true
     })
+    let data = message.toObject()
     return this.send("block_store.get_blocks_by_id", data);
   }
 
   get_blocks_by_height(head_block_id, block_height, num_blocks = 1) {
-    let data = new ProtoBlockStore.get_blocks_by_height_request({
-      headBlockId: head_block_id,
-      ancestorStartHeight: block_height,
-      numBlocks: num_blocks,
-      returnBlock: true,
-      returnReceipt: true
-    })
+    let message = new ProtoBlockStore.get_blocks_by_height_request()
+    message.setHeadBlockId(head_block_id)
+    message.setAncestorStartHeight(block_height)
+    message.setNumBlocks(num_blocks)
+    message.setReturnBlock(true)
+    message.setReturnReceipt(false)
+    let data = message.toObject()
     return this.send("block_store.get_blocks_by_height", data);
   }
 
@@ -32,7 +31,6 @@ class BlockStore extends JSONRequest {
     let data = {
       transaction_ids: [ tx_ids ],
     };
-    console.log(data)
     return this.send("block_store.get_transactions_by_id", data);
   }
 }

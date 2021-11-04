@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import moment from 'moment';
 import {  Card, Row, Col, Table } from 'react-bootstrap';
 import { get as _get } from 'lodash'
 
@@ -81,7 +82,7 @@ function index(props) {
                   <tr>
                     <th> Block number </th>
                     <th> Block id  </th>
-                    <th> Transactions </th>
+                    <th> Timestamp </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -95,7 +96,7 @@ function index(props) {
                           </Link>
                         </td>
                         <td> { _get(block, 'block_id') } </td>
-                        <td> { _get(block, 'block.transactions').length } </td>
+                        <td> { moment.unix( _get(block, 'block.header.timestamp')/1000 ).format('DD-MM-YYYY H:mm:ss')  } </td>
                       </tr>
                     ))
                   }

@@ -1,8 +1,14 @@
 import Head from 'next/head';
 import { Card, Row, Col, Table, ListGroup } from 'react-bootstrap';
-import { Uint64, VariableBlob, Str } from 'koinos-types2'
-// import Koinos from 'koinos-types2';
 import { get as _get } from 'lodash';
+
+// utils
+import bs58 from 'bs58';
+import { encodeBase64 }  from '@/utils/parsed';
+
+// Blockchain
+import TokenContract from '@/proto/koinos/contracts/token/token_pb';
+import PBChain from '@/proto/koinos/chain/chain_pb';
 
 // components global
 import Navbar from '@/components/navbar';
@@ -34,7 +40,12 @@ function index(props) {
                   
                   <tr>
                     <td> Balance </td>
-                    <td> { _get(props, 'balance', 0).toFixed(8) } { _get(props, 'symbol', 'TKOIN') } </td>
+                    <td> { _get(props, 'balance', 0).toFixed(6) } TKOIN </td>
+                  </tr>
+
+                  <tr>
+                    <td> Mana </td>
+                    <td> { _get(props, 'mana', 0).toFixed(6) } Mana </td>
                   </tr>
 
                 </tbody>
@@ -55,35 +66,42 @@ function index(props) {
 
 
 export async function getServerSideProps({ params }) {
-  let { address_id } = params;
-
-  let _address = new Str(address_id)
-  let vb = new VariableBlob();
-  vb = _address.serialize(vb)
-
-  // ger balance token
+  const { address_id } = params;
+  const KoinContractID = "19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ";
+  
+  // balance koin address request
+  let balArg = new TokenContract.balance_of_arguments()
+  balArg.setOwner( bs58.decode(address_id) )
+  let balData = balArg.serializeBinary()
   let _balance = await chain.get_contract(
-    "Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=",
+    KoinContractID,
     0x15619248,
-    vb.toJSON()
+    encodeBase64(balData)
   )
-  let balance = new VariableBlob(_balance.result);
-  balance = Uint64.deserialize(balance)
+  let balRes = TokenContract.balance_of_result.deserializeBinary(_balance.result);
+  let balance = balRes.getValue();
 
-  // get symbol token
-  /*let _symbol = await chain.get_contract(
-    "Mkw96mR+Hh71IWwJoT/2lJXBDl5Q=",
-    0x7e794b24
+
+  // balance mana address request
+  const manaArg = new PBChain.get_account_rc_arguments();
+  manaArg.setAccount( bs58.decode(address_id) )
+  let manaData = balArg.serializeBinary()
+  let _mana = await chain.get_contract(
+    KoinContractID,
+    0,
+    encodeBase64(manaData)
   )
-  let symbol = new VariableBlob(_symbol.result);
-  symbol = Str.deserialize(symbol)*/
+  let manaRes = PBChain.get_account_rc_result.deserializeBinary(_mana.result);
+  let mana = manaRes.getValue();
 
+
+  
   return {
     props: {
       address: address_id,
-      balance: parseInt( balance.num )/100000000,
-      symbol: 'tKOIN' // symbol.str
-    }, // will be passed to the page component as props
+      balance: parseInt( balance )/100000000,
+      mana:    parseInt( mana )/100000000,
+    }
   }
 }
 
