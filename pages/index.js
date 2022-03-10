@@ -56,7 +56,7 @@ function index(props) {
                   <tr>
                     <td> Irreversible block </td>
                     <td>
-                      <Link href={`/block/${ _get(props, 'chain_head.last_irreversible_height') }`} className="link_next">
+                      <Link href={`/block/${ _get(props, 'chain_head.last_irreversible_block') }`} className="link_next">
                         <a> { _get(props, 'chain_head.last_irreversible_block') } </a>
                       </Link>
                     </td>
